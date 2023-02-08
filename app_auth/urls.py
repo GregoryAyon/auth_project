@@ -1,5 +1,5 @@
 from django.urls import path
-from app_auth.views import UserListCreateView, UserRetriveUpdateDeleteView, GroupListCreateView, GroupUpdateDeleteView, test_view
+from app_auth.views import UserListCreateView, UserRetriveUpdateDeleteView, GroupListCreateView, GroupUpdateDeleteView, UserGroupPermissionApi, test_view
 
 app_name = 'app_auth'
 
@@ -12,6 +12,9 @@ urlpatterns = [
          name='group_list_create'),
     path('group-update-delete/<int:id>',
          GroupUpdateDeleteView.as_view(), name='group_update_delete'),
+
+    path('group-permission-api/',
+         UserGroupPermissionApi.as_view(), name='group_permission_api'),
 
     path('test/', test_view),
 ]

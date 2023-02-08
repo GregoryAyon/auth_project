@@ -10,17 +10,18 @@
           <legend>- Add User Group Permissions -</legend>
           <div class="mb-3">
             <label for="id_group_permission" class="form-label">select user</label>
-            <select id="id_group_permission" class="form-select">
+            <select id="id_group_permission" class="form-select" required>
               <option>please select</option>
             </select>
           </div>
           <div class="mb-3">
             <label for="id_user" class="form-label">select group permission</label>
-            <select id="id_user" class="form-select">
+            <select id="id_user" class="form-select" required>
               <option>please select group</option>
             </select>
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" onclick="btnClickPost()" class="btn btn-primary">Submit</button>
+          <button type="button" onclick="btnClickDelete()" class="btn btn-danger">Delete</button>
         </fieldset>
       </form>
 </div>
@@ -66,7 +67,7 @@
     .then((data) => {
         let option_user_list = "";
         let get_data = data.map(item => {
-            console.log(item);
+            // console.log(item);
             option_user_list += `<option value="${item.id}">${item.username}</option>`;
         })
         select2.insertAdjacentHTML('beforeend',option_user_list);
@@ -75,6 +76,80 @@
     .catch((error) => {
         console.error('Error:', error);
     });
+</script>
+
+<script>
+    function btnClickPost(){
+        let select1 = document.getElementById("id_group_permission");
+        let select2 = document.getElementById("id_user");
+
+        let group_id = select1.value;
+        let group_name = select1.options[select1.selectedIndex].text;
+
+        let user_id = select2.value;
+        let user_name = select2.options[select2.selectedIndex].text;
+
+        console.log('Group: ', group_id, group_name);
+        console.log('User: ', user_id, user_name);
+
+
+    fetch(`${url}group-permission-api/`, {
+        method: "POST",
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            group_id:group_id,
+            user_id:user_id,
+        }),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.success('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+
+<script>
+
+    function btnClickDelete(){
+        let select1 = document.getElementById("id_group_permission");
+        let select2 = document.getElementById("id_user");
+
+        let group_id = select1.value;
+        let group_name = select1.options[select1.selectedIndex].text;
+
+        let user_id = select2.value;
+        let user_name = select2.options[select2.selectedIndex].text;
+
+        console.log('Group: ', group_id, group_name);
+        console.log('User: ', user_id, user_name);
+
+
+    fetch(`${url}group-permission-api/`, {
+        method: "DELETE",
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            group_id:group_id,
+            user_id:user_id,
+        }),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.success('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+
 </script>
 
 {% endblock script %}
