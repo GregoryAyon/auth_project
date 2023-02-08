@@ -2,6 +2,10 @@ from rest_framework import serializers
 from app_auth.models import User
 from django.contrib.auth.decorators import user_passes_test
 
+from django.contrib.auth.models import Group
+from django.contrib.auth.models import Permission
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -23,7 +27,14 @@ class UserSerializer(serializers.ModelSerializer):
                 "write_only": True,
             },
         }
-    
+
     def create(self, validated_data):
 
         return User.objects.create_user(**validated_data)
+
+
+class GroupSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Group
+        fields = '__all__'

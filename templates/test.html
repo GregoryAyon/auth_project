@@ -1,0 +1,80 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+
+{% block content %} 
+
+<div class="container mt-4">
+    <form >
+        <fieldset>
+          <legend>- Add User Group Permissions -</legend>
+          <div class="mb-3">
+            <label for="id_group_permission" class="form-label">select user</label>
+            <select id="id_group_permission" class="form-select">
+              <option>please select</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="id_user" class="form-label">select group permission</label>
+            <select id="id_user" class="form-select">
+              <option>please select group</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </fieldset>
+      </form>
+</div>
+
+{% endblock content %}
+
+
+{% block script %}
+
+<script>
+    const select1 = document.getElementById("id_group_permission");
+    const select2 = document.getElementById("id_user");
+
+    const url = "http://127.0.0.1:8000/api/auth/"
+
+    fetch(`${url}group-list-create/`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        // console.log('Group Permission Data: ',data);
+        let option_group_list = "";
+        let get_data = data.map(item => {
+            option_group_list += `<option value="${item.id}">${item.name}</option>`;
+        })
+        select1.insertAdjacentHTML('beforeend',option_group_list);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+
+
+    fetch(`${url}users/`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        let option_user_list = "";
+        let get_data = data.map(item => {
+            console.log(item);
+            option_user_list += `<option value="${item.id}">${item.username}</option>`;
+        })
+        select2.insertAdjacentHTML('beforeend',option_user_list);
+        // console.log('User Data: ',data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+</script>
+
+{% endblock script %}
