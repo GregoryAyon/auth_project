@@ -1,5 +1,5 @@
 from django.urls import path
-from app_auth.views import UserListCreateView, UserRetriveUpdateDeleteView, GroupListCreateView, GroupUpdateDeleteView, UserGroupPermissionApi, test_view
+from app_auth.views import UserListCreateView, UserRetriveUpdateDeleteView, GroupListCreateView, GroupUpdateDeleteView, UserGroupPermissionApi, test_view, PasswordReset, ResetPasswordAPI
 
 app_name = 'app_auth'
 
@@ -17,4 +17,10 @@ urlpatterns = [
          UserGroupPermissionApi.as_view(), name='group_permission_api'),
 
     path('test/', test_view),
+
+    # --- Reset Password ---
+    path("password-reset/", PasswordReset.as_view(),
+         name="request-password-reset", ),
+    path("password-reset/<str:encoded_pk>/<str:token>/",
+         ResetPasswordAPI.as_view(), name="reset-password",),
 ]

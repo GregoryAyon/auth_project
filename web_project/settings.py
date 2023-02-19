@@ -42,6 +42,7 @@ DEFAULT_APPS = [
 THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
+    "django_rest_passwordreset",
     "corsheaders",
 ]
 
@@ -176,6 +177,8 @@ REST_FRAMEWORK = {
     )
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=365),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=365),
@@ -208,6 +211,8 @@ SIMPLE_JWT = {
 
 
 SESSION_COOKIE_AGE = 31536000  # 1year
+
+PASSWORD_RESET_TIMEOUT = 600
 
 
 AUTH_USER_MODEL = "app_auth.User"

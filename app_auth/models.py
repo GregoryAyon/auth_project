@@ -1,3 +1,7 @@
+# from django.core.mail import send_mail
+# from django_rest_passwordreset.signals import reset_password_token_created
+# from django.urls import reverse
+# from django.dispatch import receiver
 from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
 import uuid
@@ -20,12 +24,9 @@ class User(AbstractUser):
         upload_to="profile_picture/%Y/%d/%b", null=True, blank=True
     )
 
-    
     def save(self, *args, **kwargs):
         self.full_name = self.get_full_name()
         super().save(*args, **kwargs)
-
-
 
 
 class Address(models.Model):
@@ -48,3 +49,21 @@ class Address(models.Model):
 
     def __str__(self):
         return f"User{self.user_id}-{self.street_address}"
+
+
+# @receiver(reset_password_token_created)
+# def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+
+#     email_plaintext_message = "{}?token={}".format(
+#         reverse('password_reset:reset-password-request'), reset_password_token.key)
+
+#     send_mail(
+#         # title:
+#         "Password Reset for {title}".format(title="Some website title"),
+#         # message:
+#         email_plaintext_message,
+#         # from:
+#         "noreply@somehost.local",
+#         # to:
+#         [reset_password_token.user.email]
+#     )
